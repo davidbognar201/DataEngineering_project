@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+
+  airflow:
+    build: ./airflow-server
+    container_name: airflow-server
+    ports:
+      - "8080:8080"
+    command: webserver
+    volumes:
+      - ./airflow-server/dags:/usr/local/airflow/dags
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
