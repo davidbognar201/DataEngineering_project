@@ -29,7 +29,7 @@ def fetch_api_data(ti, **context):
     headers = { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': "tasty.p.rapidapi.com"}
     querystring = {"from":"0", "size":"10"}
 
-    response = response.request("GET", RECIPES_URL, headers=headers, params=querystring)
+    response = requests.request("GET", RECIPES_URL, headers=headers, params=querystring)
     # Check if response is NULL    - TO DO
     ti.xcom_push(key='response_data', value=response)
     print(f"Data is sucesfully fetched from {RECIPES_URL}")
