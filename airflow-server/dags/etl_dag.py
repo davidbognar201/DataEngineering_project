@@ -35,8 +35,8 @@ def fetch_api_data(ti, **context):
     print(f"Data is sucesfully fetched from {RECIPES_URL}")
 
 def process_response_data(ti, **context):
-    response = ti.xcom_pull(key="reponse_data", task_ids=["fetch_api_data"])
-    response_json = response.json()
+    response = ti.xcom_pull(key="response_data", task_ids=["fetch_api_data"])
+    response_json = response[0].json()
     raise NotImplementedError
 
 def validate_data(ti, **context):
