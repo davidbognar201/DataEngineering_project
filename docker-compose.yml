@@ -4,6 +4,8 @@ services:
   airflow:
     build: ./airflow-server
     container_name: airflow-server
+    env_file:
+      - .env
     ports:
       - "8080:8080"
     command: webserver
