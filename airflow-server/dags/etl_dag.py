@@ -13,7 +13,7 @@ RECIPES_URL = os.getenv("RECIPES_URL")
 API_KEY = os.getenv("API_KEY")
 MONGO_URL = os.getenv("MONGO_URL")
 
-def callback_on_failed_task(**context):
+def callback_on_failed_task(ti, **context):
     print(f"Failure in the following task: {context['task_instance_key_str']}")
 
 def api_healthcheck(ti, **context):
@@ -67,37 +67,43 @@ with DAG(
         task_id='api_healthcheck',
         python_callable=api_healthcheck,
         dag=dag,
-        do_xcom_push=True
+        do_xcom_push=True,
+        provide_context=True
         )
 
     t2 = PythonOperator(
         task_id='fetch_api_data',
         python_callable=fetch_api_data,
-        dag=dag
+        dag=dag,
+        provide_context=True
         )
     
     t3 = PythonOperator(
         task_id='process_response_data',
         python_callable=process_response_data,
-        dag=dag
+        dag=dag,
+        provide_context=True
         )
     
     t4 = PythonOperator(
         task_id='validate_data',
         python_callable=validate_data,
-        dag=dag
+        dag=dag,
+        provide_context=True
         )
     
     t5 = PythonOperator(
         task_id='load_data_to_db',
         python_callable=load_data_to_db,
-        dag=dag
+        dag=dag,
+        provide_context=True
         )
     
     t6 = PythonOperator(
         task_id='validate_data_load',
         python_callable=validate_data_load,
-        dag=dag
+        dag=dag,
+        provide_context=True
         )
 
     t1 >> t2 >> t3 >> t4 >> t5 >> t6
